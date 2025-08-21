@@ -18,4 +18,38 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"
+ruff = "^0.12.9"
+pre-commit = "^4.3.0"
 
+
+[tool.ruff]
+target-version = "py310" # Python version (examples: 39 for 3.9, 310 for 3.10, etc.)
+line-length = 120 # Maximum line-length for formatting
+exclude = [ # Scripts or folders to exclude from linting/formatting
+    "bin",
+    "guidelines",
+    "notebooks",
+    "tests",
+    "validation_tests"
+]
+
+[tool.ruff.lint]
+ignore = [ # Rules to ignore. In this example these are all docstring (D) related rules.
+
+    "S113", #Usage of requests without timeout.
+    "N803", #Argument name should be lowercase (Will be an issue for X_train, X_test naming convention).
+    "N806", #Variable in function should be lowercase (Will be an issue for the same reason as N803).
+
+]
+select = [ # Sets of rules to check for
+    "I", #isort rules.
+    "S", #bandit rules.
+    "E", "W", #pycodestyle rules.
+    "N", #pep8 naming rules.
+    "F", #Flake8 rules.
+    "T20", #flake8-print plugin to make sure there are no print statements in the code.
+    "ANN", #flake8-annotations plugin to make sure functions and methods are properly type annotated.
+    "ARG", #flake8-unused-arguments plugin to check for unused arguments that should be removed.
+
+
+]

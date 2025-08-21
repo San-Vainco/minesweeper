@@ -1,10 +1,12 @@
-""" This module implements the Minesweeper game. """
+"""This module implements the Minesweeper game."""
+
 # minesweeper.py
 import random
+from collections import deque
 
 
 class Minesweeper:
-    def __init__(self, rows:int, cols:int, num_mines:int):
+    def __init__(self, rows: int, cols: int, num_mines: int) -> None:
         self.rows = rows
         self.cols = cols
         self.num_mines = num_mines
@@ -13,25 +15,23 @@ class Minesweeper:
         self.revealed = set()
         self.place_mines()
 
-
     """ Randomly place mines on the board, updating adjacent cells with mine counts. """
-    def place_mines(self):
+
+    def place_mines(self) -> None:
         while len(self.mines) < self.num_mines:
-            r,c = random.randint(0, self.rows - 1), random.randint(0, self.cols - 1)
+            r, c = random.randint(0, self.rows - 1), random.randint(0, self.cols - 1)  # noqa: S311
             if (r, c) not in self.mines:
                 self.mines.add((r, c))
-                self.board[r][c] =  '💣'
+                self.board[r][c] = "💣"
 
         for r, c in self.mines:
-            for i in range(r-1, r+2):
-                for j in range(c-1, c+2):
-                    if 0 <= i < self.rows and 0 <= j < self.cols and self.board[i][j] != '💣':
-                        if self.board[i][j] == '':
+            for i in range(r - 1, r + 2):
+                for j in range(c - 1, c + 2):
+                    if 0 <= i < self.rows and 0 <= j < self.cols and self.board[i][j] != "💣":
+                        if self.board[i][j] == "":
                             self.board[i][j] = 1
                         else:
                             self.board[i][j] += 1
-
-
 
     def reveal(self, row: int, col: int) -> str:
         """Reveal a cell on the board.
@@ -78,8 +78,6 @@ class Minesweeper:
 
         return "Continue"
 
-
-
     def get_board(self) -> list:
         """Return the current visible state of the board."""
         visible = []
@@ -93,16 +91,12 @@ class Minesweeper:
             visible.append(row)
         return visible
 
-
     def is_winner(self) -> bool:
         """Check if the game has been won."""
         total_cells = self.rows * self.cols
         safe_cells = total_cells - self.num_mines
         return len([cell for cell in self.revealed if cell not in self.mines]) == safe_cells
 
-
-
-
     def restart(self) -> None:
-        """ Restart the game with the same parameters. """
+        """Restart the game with the same parameters."""
         self.__init__(self.rows, self.cols, self.num_mines)
